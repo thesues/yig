@@ -2,17 +2,20 @@ package lib
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/juju/errors"
 	"io/ioutil"
+	"net/http"
 	"time"
 )
 
-func (s3client *S3Client) PutObject(bucketName, key, value string) (err error) {
+func (s3client *S3Client) PutObject(bucketName, key string, value []byte) (err error) {
 	params := &s3.PutObjectInput{
 		Bucket: aws.String(bucketName),
 		Key:    aws.String(key),
-		Body:   bytes.NewReader([]byte(value)),
+		Body:   bytes.NewReader(value),
 	}
 	if _, err = s3client.Client.PutObject(params); err != nil {
 		return err
@@ -83,4 +86,17 @@ func (s3client *S3Client) DeleteObject(bucketName, key string) (err error) {
 		return err
 	}
 	return
+}
+
+func (s3client *S3Client) GetBucketMetrics(bucketName string) (err error) {
+	resp, err := http.Get("http://127.0.0.1:9000/metrics")
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return errors.New(fmt.Sprintf("Status code is %d, should be 200."))
+	}
+	b, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(b))
+	return nil
 }

@@ -18,7 +18,7 @@ func Test_Object_Prepare(t *testing.T) {
 
 func Test_PutObject(t *testing.T) {
 	sc := NewS3()
-	err := sc.PutObject(TEST_BUCKET, TEST_KEY, TEST_VALUE)
+	err := sc.PutObject(TEST_BUCKET, TEST_KEY, []byte(TEST_VALUE))
 	if err != nil {
 		t.Fatal("PutObject err:", err)
 	}
@@ -59,9 +59,56 @@ func Test_DeleteObject(t *testing.T) {
 	t.Log("DeleteObject Success!")
 }
 
+func Test_SmallFile(t *testing.T) {
+	sc := NewS3()
+	var tt []byte
+	for i := 0; i < 1024*1024*10; i++ {
+		tt = append(tt, 'a')
+	}
+
+	for i := 0; i < 100; i++ {
+		err := sc.PutObject(TEST_BUCKET, TEST_KEY, append(tt, byte(i)))
+		if err != nil {
+			t.Fatal("PutObject err:", err)
+		}
+	}
+	t.Log("PutObjects Success!")
+
+	//for i:=0; i<100 ;i++ {
+	//	v, err := sc.GetObject(TEST_BUCKET, TEST_KEY+strconv.Itoa(i))
+	//	if err != nil {
+	//		t.Fatal("GetObject err:", err)
+	//	}
+	//	if v != TEST_VALUE+strconv.Itoa(i) {
+	//		t.Fatal("GetObject err: value is:", v, ", but should be:", TEST_VALUE)
+	//	}
+	//}
+	//t.Log("GetObjects Success!")
+
+	for i := 0; i < 100; i++ {
+		err := sc.DeleteObject(TEST_BUCKET, TEST_KEY)
+		if err != nil {
+			t.Fatal("DeleteObject err:", err)
+		}
+	}
+	t.Log("DeleteObjects Success!")
+
+	for i := 0; i < 100; i++ {
+		err := sc.DeleteObject(TEST_BUCKET, TEST_KEY)
+		if err != nil {
+
+		}
+	}
+	err := sc.GetBucketMetrics(TEST_BUCKET)
+	if err != nil {
+		t.Log(err)
+	}
+
+}
+
 func Test_PreSignedGetObject(t *testing.T) {
 	sc := NewS3()
-	err := sc.PutObject(TEST_BUCKET, TEST_KEY, TEST_VALUE)
+	err := sc.PutObject(TEST_BUCKET, TEST_KEY, []byte(TEST_VALUE))
 	if err != nil {
 		t.Fatal("PutObject err:", err)
 	}

@@ -24,7 +24,7 @@ func NewS3() *S3Client {
 	s3client := s3.New(session.Must(session.NewSession(
 		&aws.Config{
 			Credentials: creds,
-			DisableSSL:  aws.Bool(true),
+			DisableSSL:  aws.Bool(false),
 			Endpoint:    aws.String("s3.test.com"),
 			Region:      aws.String("r"),
 		},
