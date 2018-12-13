@@ -42,7 +42,7 @@ type Config struct {
 	LcDebug                    bool   //used for tools/lc only, if this was set true, will treat days as seconds
 	LogLevel                   int    `toml:"log_level"` //1-20
 	CephConfigPattern          string `toml:"ceph_config_pattern"`
-	ReservedOrigins            string `toml:"reserved_origins"`// www.ccc.com,www.bbb.com,127.0.0.1
+	ReservedOrigins            string `toml:"reserved_origins"` // www.ccc.com,www.bbb.com,127.0.0.1
 	MetaStore                  string `toml:"meta_store"`
 	TidbInfo                   string `toml:"tidb_info"`
 	KeepAlive                  bool   `toml:"keepalive"`

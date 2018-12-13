@@ -1,7 +1,6 @@
 package v2
 
 import (
-	"github.com/journeymidnight/yig/iam/common"
 	"github.com/journeymidnight/yig/circuitbreak"
 	"github.com/journeymidnight/yig/helper"
 	"fmt"
@@ -9,6 +8,8 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"errors"
+	"github.com/journeymidnight/yig/iam/common"
+
 )
 
 type AccessKeyItemList struct {

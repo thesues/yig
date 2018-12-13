@@ -1,8 +1,8 @@
 package main
 
 import (
-	"sync"
 	"github.com/prometheus/client_golang/prometheus"
+	"sync"
 )
 
 type Metrics struct {
@@ -34,14 +34,14 @@ func (c *Metrics) Collect(ch chan<- prometheus.Metric) {
 
 	GaugeMetricData := c.GenerateUsageData()
 	for bucket, currentValue := range GaugeMetricData {
-		ch <-prometheus.MustNewConstMetric(c.metrics["bucket_usage_byte_metric"], prometheus.GaugeValue, float64(currentValue), bucket)
+		ch <- prometheus.MustNewConstMetric(c.metrics["bucket_usage_byte_metric"], prometheus.GaugeValue, float64(currentValue), bucket)
 	}
 }
 
 func (c *Metrics) GenerateUsageData() (GaugeMetricData map[string]int64) {
 	buckets, err := adminServer.Yig.MetaStorage.GetBuckets()
 	if err != nil {
-		adminServer.Yig.Logger.Println(5,"get usage data for prometheus failed:", err.Error())
+		adminServer.Yig.Logger.Println(5, "get usage data for prometheus failed:", err.Error())
 		return
 	}
 	GaugeMetricData = make(map[string]int64)

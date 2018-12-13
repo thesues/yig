@@ -267,6 +267,7 @@ func (yig *YigStorage) PutObjectPart(bucketName, objectName string, credential c
 		removedSize += part.Size
 	}
 
+	helper.Logger.Println(5, "Update Usage.", "PutObjectPart", "bucket:", bucketName, "part size:", part.Size, "removed size:", removedSize)
 	yig.MetaStorage.UpdateUsage(bucketName, part.Size-removedSize)
 
 	result.ETag = calculatedMd5
@@ -396,7 +397,7 @@ func (yig *YigStorage) CopyObjectPart(bucketName, objectName, uploadId string, p
 		}
 		removedSize += part.Size
 	}
-
+	helper.Logger.Println(5, "Update Usage.", "PutObjectPart", "bucket:", bucketName, "part size:", part.Size, "removed size:", removedSize)
 	yig.MetaStorage.UpdateUsage(bucketName, part.Size-removedSize)
 
 	return result, nil
@@ -521,6 +522,7 @@ func (yig *YigStorage) AbortMultipartUpload(credential common.Credential,
 		}
 		removedSize += p.Size
 	}
+	helper.Logger.Println(5, "Update Usage.", "AbortMultipartUpload", "bucket:", bucketName, "removed size:", removedSize)
 	yig.MetaStorage.UpdateUsage(bucketName, -removedSize)
 	return nil
 }

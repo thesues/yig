@@ -612,6 +612,7 @@ func (yig *YigStorage) PutObject(bucketName string, objectName string, credentia
 	}
 
 	if err == nil {
+		helper.Logger.Println(5, "Update Usage.", "PutObject", "bucket:", bucketName, "object size:", object.Size)
 		yig.MetaStorage.UpdateUsage(object.BucketName, object.Size)
 
 		yig.MetaStorage.Cache.Remove(redis.ObjectTable, bucketName+":"+objectName+":")
@@ -802,6 +803,7 @@ func (yig *YigStorage) CopyObject(targetObject *meta.Object, source io.Reader, c
 	}
 
 	if err == nil {
+		helper.Logger.Println(5, "Update Usage.", "CopyObject", "bucket:", targetObject.BucketName, "object size:", targetObject.Size)
 		yig.MetaStorage.UpdateUsage(targetObject.BucketName, targetObject.Size)
 
 		yig.MetaStorage.Cache.Remove(redis.ObjectTable,
@@ -835,6 +837,7 @@ func (yig *YigStorage) removeByObject(object *meta.Object) (err error) {
 		return ErrInternalError
 	}
 
+	helper.Logger.Println(5, "Update Usage.", "DeleteObject", "bucket:", object.BucketName, "reduce size:", -object.Size)
 	yig.MetaStorage.UpdateUsage(object.BucketName, -object.Size)
 	return nil
 }

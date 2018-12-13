@@ -81,7 +81,6 @@ func (h *HbaseClient) GetBuckets() (buckets []Bucket, err error) {
 	return buckets, nil
 }
 
-
 func (h *HbaseClient) PutBucket(bucket Bucket) error {
 	values, err := bucket.GetValues()
 	if err != nil {
