@@ -137,8 +137,8 @@ def delete_multipart_uploaded_objects(name, client):
 
 TESTS = [
     sanity.create_bucket,
-    sse_s3_multipart,
-    sse_custom_multipart,
+    #sse_s3_multipart,
+    #sse_custom_multipart,
     delete_multipart_uploaded_objects,
     sanity.delete_bucket,
 ]
